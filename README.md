@@ -1,9 +1,14 @@
 # manet-dockerfile
+
+Forked from: https://github.com/pdelsante/manet-dockerfile
+
+Updated to support WebGL rendering with Slimerjs.
+
 Manet is a website screenshot service provided by Node.js, SlimerJS and PhantomJS. It was created by Vladislav Bauer and its source code can be found here: https://github.com/vbauer/manet
 
 This Dockerfile allows you to run Manet inside a Docker container. To use it, start it as usual:
 
-    $ sudo docker run pdelsante/manet
+    $ sudo docker run -d openmaphub/manet
 
 Then find out the running container's ID by running:
 
