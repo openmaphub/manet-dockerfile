@@ -38,6 +38,15 @@ ADD xvfb_init /etc/init.d/xvfb
 ADD xvfb_daemon_run /usr/bin/xvfb-daemon-run
 RUN chmod a+x /etc/init.d/xvfb && chmod a+x /usr/bin/xvfb-daemon-run
 
+#Hack to add a hosts entry for my dev web app from http://jasonincode.com/customizing-hosts-file-in-docker/
+#this is the IP of the VirtualBox host-only network used by docker-machine
+#comment all this out if you don't need it
+RUN cp /etc/hosts /tmp/hosts
+RUN mkdir -p -- /lib-override && cp /lib/x86_64-linux-gnu/libnss_files.so.2 /lib-override
+RUN perl -pi -e 's:/etc/hosts:/tmp/hosts:g' /lib-override/libnss_files.so.2
+ENV LD_LIBRARY_PATH /lib-override
+RUN echo "192.168.59.1  dev.localhost" >> /tmp/hosts
+
 ADD entrypoint.sh /root/entrypoint.sh
 RUN chmod a+x /root/entrypoint.sh
 
