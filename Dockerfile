@@ -7,7 +7,7 @@
 #
 # Then find out its IP address by running:
 #
-#    $ sudo docker ps                  
+#    $ sudo docker ps
 #    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 #    d1d7165512e2        pdelsante/manet     "/usr/bin/manet"    48 seconds ago      Up 47 seconds       8891/tcp            romantic_cray
 #
@@ -28,6 +28,8 @@ RUN apt-get update && \
     apt-get -y install nodejs build-essential xvfb libfontconfig1 && \
     npm install -g slimerjs@0.906.2 && \
     npm install -g phantomjs@2.1.7 && \
-    npm install -g manet@0.4.15
+    npm install -g manet@0.4.15 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 
 ENTRYPOINT ["/usr/bin/manet"]
