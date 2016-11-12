@@ -1,44 +1,33 @@
-# This is a Dockerfile for creating a Manet container from a base Ubuntu 14:04 image.
-# Forked from: https://github.com/pdelsante/manet-dockerfile
-# Manet's code can be found here: https://github.com/vbauer/manet
-#
-# To use this container, start it as usual:
-#
-#    $ sudo docker run pdelsante/manet
-#
-# Then find out its IP address by running:
-#
-#    $ sudo docker ps
-#    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-#    d1d7165512e2        pdelsante/manet     "/usr/bin/manet"    48 seconds ago      Up 47 seconds       8891/tcp            romantic_cray
-#
-#    $ sudo docker inspect d1d7165512e2 | grep IPAddress
-#         "IPAddress": "172.17.0.1",
-#
-# Now you can connect to:
-#    http://172.17.0.1:8891
-#
-FROM ubuntu:trusty
+FROM ubuntu:16.04
 MAINTAINER kris@maphubs.com
 ENV DEBIAN_FRONTEND noninteractive
 EXPOSE 8891
 
-RUN apt-get update && \
-    apt-get -y install curl && \
-    curl -sL https://deb.nodesource.com/setup_4.x | sudo bash - && \
-    apt-get -y install nodejs build-essential xvfb libfontconfig1 firefox && \
-    npm install -g slimerjs@0.9.6-2 && \
-    npm install -g phantomjs@1.9.19 && \
-    npm install -g manet@0.4.9
+ENV SLIMERJS_VERSION_F 0.10.1
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update && \
+    apt-get -y install curl unzip wget && \
+    curl -sL https://deb.nodesource.com/setup_6.x | /bin/bash - && \
+    apt-get -y install nodejs build-essential xvfb libfontconfig1 firefox && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
+RUN mkdir -p /srv/var && \
+    wget -O /tmp/slimerjs-$SLIMERJS_VERSION_F.zip http://download.slimerjs.org/releases/$SLIMERJS_VERSION_F/slimerjs-$SLIMERJS_VERSION_F.zip && \
+    unzip /tmp/slimerjs-$SLIMERJS_VERSION_F.zip -d /tmp && \
+    rm -f /tmp/slimerjs-$SLIMERJS_VERSION_F.zip && \
+    mv /tmp/slimerjs-$SLIMERJS_VERSION_F/ /srv/var/slimerjs && \
+    chmod 755 /srv/var/slimerjs/slimerjs && \
+    ln -s /srv/var/slimerjs/slimerjs /usr/bin/slimerjs && \
+    npm install -g phantomjs@2.1.7 && \
+    npm install -g manet@0.4.16
 
 ENV DISPLAY=:99
 ADD xvfb_init /etc/init.d/xvfb
 ADD xvfb_daemon_run /usr/bin/xvfb-daemon-run
-RUN chmod a+x /etc/init.d/xvfb && chmod a+x /usr/bin/xvfb-daemon-run
-
 ADD entrypoint.sh /root/entrypoint.sh
-RUN chmod a+x /root/entrypoint.sh
+RUN chmod a+x /etc/init.d/xvfb && \
+    chmod a+x /usr/bin/xvfb-daemon-run && \
+    chmod a+x /root/entrypoint.sh
 
 ENTRYPOINT ["/root/entrypoint.sh"]
