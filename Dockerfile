@@ -3,7 +3,7 @@ MAINTAINER kris@maphubs.com
 ENV DEBIAN_FRONTEND noninteractive
 EXPOSE 8891
 
-ENV SLIMERJS_VERSION_F 0.10.3
+ENV SLIMERJS_VERSION_F 0.10.1
 
 RUN apt-get update && \
     apt-get -y install curl unzip wget && \
@@ -13,7 +13,7 @@ RUN apt-get update && \
 
 #Firefox version 52 for compatibility with slimer 0.10.3
 RUN dpkg -r --force-depends firefox && \
-    wget -O /tmp/firefox.deb https://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt/pool/main/f/firefox-mozilla-build/firefox-mozilla-build_52.0.2-0ubuntu1_amd64.deb && \
+    wget -O /tmp/firefox.deb https://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt/pool/main/f/firefox-mozilla-build/firefox-mozilla-build_49.0.2-0ubuntu1_amd64.deb && \
     dpkg -i /tmp/firefox.deb
 
 RUN mkdir -p /srv/var && \
