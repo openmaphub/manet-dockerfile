@@ -3,7 +3,7 @@ MAINTAINER kris@maphubs.com
 ENV DEBIAN_FRONTEND noninteractive
 EXPOSE 8891
 
-ENV SLIMERJS_VERSION_F 0.10.1
+ENV SLIMERJS_VERSION_F 0.10.3
 
 RUN apt-get update && \
     apt-get -y install curl unzip wget && \
@@ -20,7 +20,7 @@ RUN mkdir -p /srv/var && \
     chmod 755 /srv/var/slimerjs/slimerjs && \
     ln -s /srv/var/slimerjs/slimerjs /usr/bin/slimerjs && \
     npm install -g phantomjs@2.1.7 && \
-    npm install -g manet@0.4.16
+    npm install -g manet@0.4.20
 
 ENV DISPLAY=:99
 ADD xvfb_init /etc/init.d/xvfb
@@ -30,4 +30,5 @@ RUN chmod a+x /etc/init.d/xvfb && \
     chmod a+x /usr/bin/xvfb-daemon-run && \
     chmod a+x /root/entrypoint.sh
 
-ENTRYPOINT ["/root/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/manet"]
+CMD ["--command=\"/usr/bin/xvfb-daemon-run /usr/bin/slimerjs --disk-cache=yes --debug=yes\"", "--level=debug", "--compress"]
