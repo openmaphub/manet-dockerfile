@@ -13,8 +13,10 @@ RUN apt-get update && \
 
 #Firefox version 52 for compatibility with slimer 0.10.3
 RUN dpkg -r --force-depends firefox && \
-    wget -O /tmp/firefox.deb https://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt/pool/main/f/firefox-mozilla-build/firefox-mozilla-build_49.0.2-0ubuntu1_amd64.deb && \
-    dpkg -i /tmp/firefox.deb
+    wget -O /tmp/firefox32.deb https://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt/pool/main/f/firefox-mozilla-build/firefox-mozilla-build_49.0.2-0ubuntu1_i386.deb && \
+    dpkg -i /tmp/firefox32.deb && \
+    wget -O /tmp/firefox64.deb https://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt/pool/main/f/firefox-mozilla-build/firefox-mozilla-build_49.0.2-0ubuntu1_amd64.deb && \
+    dpkg -i /tmp/firefox64.deb
 
 RUN mkdir -p /srv/var && \
     wget -O /tmp/slimerjs-$SLIMERJS_VERSION_F.zip http://download.slimerjs.org/releases/$SLIMERJS_VERSION_F/slimerjs-$SLIMERJS_VERSION_F.zip && \
