@@ -8,7 +8,7 @@ ENV SLIMERJS_VERSION_F 0.10.3
 RUN apt-get update && \
     apt-get -y install curl unzip wget && \
     curl -sL https://deb.nodesource.com/setup_6.x | /bin/bash - && \
-    apt-get -y install nodejs build-essential xvfb libfontconfig1 && \
+    apt-get -y install nodejs build-essential xvfb libfontconfig1 libgtk-3-0 libgtk-3-bin libgtk-3-common libgtk2.0-0 libgtk2.0-bin libgtk2.0-common && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #Firefox version 52 for compatibility with slimer 0.10.3
