@@ -12,7 +12,8 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #Firefox version 52 for compatibility with slimer 0.10.3
-RUN wget -O /tmp/firefox.deb https://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt/pool/main/f/firefox-mozilla-build/firefox-mozilla-build_52.0.2-0ubuntu1_amd64.deb && \
+RUN dpkg -r --force-depends firefox && \
+    wget -O /tmp/firefox.deb https://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt/pool/main/f/firefox-mozilla-build/firefox-mozilla-build_52.0.2-0ubuntu1_amd64.deb && \
     dpkg -i /tmp/firefox.deb
 
 RUN mkdir -p /srv/var && \
@@ -23,7 +24,7 @@ RUN mkdir -p /srv/var && \
     chmod 755 /srv/var/slimerjs/slimerjs && \
     ln -s /srv/var/slimerjs/slimerjs /usr/bin/slimerjs && \
     npm install -g phantomjs@2.1.7 && \
-    npm install -g manet@0.4.20
+    npm install -g manet@0.4.16
 
 ENV DISPLAY=:99
 ADD xvfb_init /etc/init.d/xvfb
