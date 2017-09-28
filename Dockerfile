@@ -8,15 +8,12 @@ ENV SLIMERJS_VERSION_F 0.10.1
 RUN apt-get update && \
     apt-get -y install curl unzip wget && \
     curl -sL https://deb.nodesource.com/setup_6.x | /bin/bash - && \
-    apt-get -y install nodejs build-essential xvfb libfontconfig1 firefox && \
+    apt-get -y install nodejs build-essential xvfb libfontconfig1 firefox=45.0.2+build1-0ubuntu1 && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-#Firefox version 52 for compatibility with slimer 0.10.3
-RUN dpkg -r --force-depends firefox && \
-    wget -O /tmp/firefox32.deb https://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt/pool/main/f/firefox-mozilla-build/firefox-mozilla-build_49.0.2-0ubuntu1_i386.deb && \
-    dpkg -i /tmp/firefox32.deb && \
-    wget -O /tmp/firefox64.deb https://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt/pool/main/f/firefox-mozilla-build/firefox-mozilla-build_49.0.2-0ubuntu1_amd64.deb && \
-    dpkg -i /tmp/firefox64.deb
+#Try specific Firefox version for compatibility with slimer
+#RUN wget -O /tmp/firefox64.deb https://downloads.sourceforge.net/project/ubuntuzilla/mozilla/apt/pool/main/f/firefox-mozilla-build/firefox-mozilla-build_49.0.2-0ubuntu1_amd64.deb && \
+#    dpkg -i /tmp/firefox64.deb
 
 RUN mkdir -p /srv/var && \
     wget -O /tmp/slimerjs-$SLIMERJS_VERSION_F.zip http://download.slimerjs.org/releases/$SLIMERJS_VERSION_F/slimerjs-$SLIMERJS_VERSION_F.zip && \
